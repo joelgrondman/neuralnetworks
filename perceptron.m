@@ -1,20 +1,27 @@
-function [ w ] = perceptron(xi, S)
+function [ w ] = perceptron(xi, S, nmax)
 
-N = size(xi,2);
-w = zeros(1,N);
-c = 0.1;
+    N = size(xi,1);
+    P = size(xi,2);
+    w = zeros(N,1);
 
-for t=1:1000
+    Ev = zeros(P,1);
+    
+    for t=1:nmax
+        
+        for p = 1:P
 
-   v = mod(t,size(xi,1))+ 1;
+            Ev(p) = dot(w, xi(:,p)) * S(p);
 
-   Ev = w.* xi(v,:) * S(v);
-
-   f = Ev < c;
-
-   w = w + (f.*xi(v,:) * S(v))/ N;
-
-end
+            if sum(sign(Ev)) == P
+               return
+            end
+            
+            if Ev(p) <= 0
+                w = w + (xi(:,p) * S(p))/ N;
+            end
+            
+        end
+    end
 
 end
 
