@@ -32,3 +32,4 @@ function [ w ] = perceptron(xi, S, nmax)
 
 end
 
+
