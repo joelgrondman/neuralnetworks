@@ -1,4 +1,4 @@
-function [ w ] = perceptron(xi, S, nmax)
+function [ w ] = teacherperceptron(xi, S, nmax)
 
     N = size(xi,1);
     P = size(xi,2);
