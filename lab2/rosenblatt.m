@@ -2,13 +2,11 @@ clear all
 
 % parameters
 N = 20;                 % number of dimensions
-ss = 0.25;
+ss = 0.1;
 a = 0.1:ss:5;          % alpha to sample for (P = floor(N*a))
 nmax = 100;             % maximum amount of iterations with perceptron
-nd = 50;                % amount of samples obtained to measure l s
+nd = 10;                % amount of samples obtained to measure l s
                         % probability
-                        
-a = [a (a(end) + ss)];
                         
 E = nan(size(a));
 Kmax = nan(size(a));
@@ -19,7 +17,7 @@ for i = 1:length(a)
 end
 
 figure(1)
-stairs([a(1:end-1)],[E(2:end)])
+plot(a,E)
 xlabel('P/N');
 ylabel('generalization error')
 ylim([0 0.6])
@@ -31,7 +29,7 @@ title(name)
 saveas(gcf,[regexprep(name,'[^\w'']',''),'.png'])
 
 figure(2)
-stairs([a(1:end-1)],[Kmax(2:end)])
+plot(a,Kmax)
 xlabel('P/N');
 ylabel('Estimated Kmax')
 xlim([0 P/N])
