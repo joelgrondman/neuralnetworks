@@ -1,6 +1,6 @@
 
 N = size(xi,1);                 %dimension input
-P = 500;                         %amount of inputs
+P = 100;                         %amount of inputs
 xi_s = xi(:,1:P)';
 tau_s = tau(1:P);
 w1 = rand(N,1);                %weights
@@ -8,7 +8,7 @@ w1 = w1./norm(w1);
 w2 = rand(N,1);
 w2 = w2./norm(w2);
 
-n = 0.01;
+n = 0.001;
 h = ones(N,1)*0.1;
 t_max = 100;
 %initialize xi and tau somehow
