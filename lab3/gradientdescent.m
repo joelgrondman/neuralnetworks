@@ -1,3 +1,4 @@
+load('data3.mat');
 
 N = size(xi,1);                 %dimension input
 P = 500;                         %amount of inputs
