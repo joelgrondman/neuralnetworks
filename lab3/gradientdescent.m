@@ -4,9 +4,11 @@ load('data3.mat');
 Sigma = @(w1,w2,xi) (tanh(xi*w1) + tanh(xi*w2));
 % function for calculating contribution
 Cont = @(w1,w2,xi,tau) ((Sigma(w1,w2,xi) - tau).^2)/2;
+%gradient of contribution with respect to w2
+grad = @(w1,w2,xi,tau) (Sigma(w1,w2,xi) - tau)*(1-tanh(xi*w2)^2)*xi';
 
 N = size(xi,1);                 %dimension input
-P = 100;                        % number of examples
+P = 1000;                        % number of examples
 Q = 100;                        % number of test samples
 xi_train = xi(:,1:P)';          % training examples
 tau_train = tau(1:P);           % corresponding labels
@@ -18,8 +20,7 @@ w1 = w1./norm(w1);
 w2 = rand(N,1);
 w2 = w2./norm(w2);
 
-n = 0.05;                       % constant learning rate
-h = ones(N,1)*0.001;            % h for approximating partial derivative
+n = 1;                       % constant learning rate
 t_max = 1000;                   % timesteps
 
 E_train = nan(t_max,1);         % vectors for holding found errors
@@ -32,12 +33,8 @@ for t = 1:t_max
         [xi_v,I] = datasample(xi_train,1);      % pick train example
         tau_v = tau_train(I);
 
-        e_v = Cont(w1,w2,xi_v,tau_v);           % calculate gradient
-        e_vh1 = Cont(w1+h,w2,xi_v,tau_v);
-        e_vh2 = Cont(w1,w2+h,xi_v,tau_v);
-
-        w1 = w1 - n*(e_vh1-e_v)./h;             % update weights
-        w2 = w2 - n*(e_vh2-e_v)./h;
+        w1 = w1 - n*grad(w2,w1,xi_v,tau_v);             % update weights
+        w2 = w2 - n*grad(w1,w2,xi_v,tau_v);
     end
     
     % estimate training and test error
